@@ -43,6 +43,7 @@
 /* Connection stuff */
 
 #include "axel.h"
+#include "netrc.h"
 
 /**
  * Convert an URL to a conn_t structure.
@@ -123,8 +124,10 @@ conn_set(conn_t *conn, const char *set_url)
 	} else {
 		/* If not: Fill in defaults */
 		if (PROTO_IS_FTP(conn->proto)) {
+			netrc_get_creds(conn);
 			/* Dash the password: Save traffic by trying
 			   to avoid multi-line responses */
+			printf("user: %s / pass: %s\n", conn->user, conn->pass);
 			strcpy(conn->user, "anonymous");
 			strcpy(conn->pass, "mailto:axel@axel.project");
 		} else {
